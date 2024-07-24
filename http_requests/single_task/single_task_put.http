@@ -1,0 +1,11 @@
+PUT http://localhost:8000/api/tasks/7
+Content-Type: application/json
+
+{
+    "id": 6,
+    "description": "second Single TAsk PUt acac",
+    "created_datetime": "2024-07-24T10:50:41.383520+08:00",
+    "due_datetime": "2024-07-24T11:00:00+08:00",
+    "is_done": false,
+    "tasklist": 1
+}
