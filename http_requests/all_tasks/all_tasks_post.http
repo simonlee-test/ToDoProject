@@ -2,8 +2,8 @@ POST http://localhost:8000/api/tasks
 Content-Type: application/json
 
 {
-    "description" : "testing Post",
-    "due_datetime" : "2024-07-24 19:02:12",
+    "description" : "testing Post2",
+    "due_datetime" : "2024-07-25 19:02:12",
     "is_done" : false,
     "tasklist" : 1
 }
