@@ -13,7 +13,11 @@ class TaskAdmin(admin.ModelAdmin):
 
 class TaskListAdmin(admin.ModelAdmin):
     list_filter = ('title', )
-    prepopulated_fields = ({'slug': ('title',)})
+    # prepopulated_fields = ({'slug': ('title',)})
+    readonly_fields = ('slug', )
+    
+    
+    
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Task, TaskAdmin)
