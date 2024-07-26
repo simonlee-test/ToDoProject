@@ -14,7 +14,8 @@ class TaskList(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-    
+        super().save(self, *args, **kwargs)
+        
     def __str__(self):
         return self.title
 
