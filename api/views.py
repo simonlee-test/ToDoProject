@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics, viewsets
-
+from rest_framework.decorators import action
+from rest_framework.request import Request
 ##################################Function Based Views##################################
 # @api_view(['GET', 'POST'])
 # def all_tasks(request, format = None):
@@ -123,3 +124,8 @@ class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     
+    @action(detail=False, url_path=r'related-task/(?P<pk>\w+)', url_name="related-tasks")
+    def related_task(self, request, pk, *args, **kwargs):
+        
+        return Response(f'I am working as {pk} with request type {type(request)}')
+########################################Viewsets############################################
