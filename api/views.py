@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ToDoList.models import Task, TaskList
-from ToDoList.serializers import TaskSerializer
-from django.shortcuts import get_object_or_404
+from ToDoList.serializers import TaskSerializer, TaskListSerilaizer
+from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics, viewsets
@@ -124,8 +124,16 @@ class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     
-    @action(detail=False, url_path=r'related-task/(?P<pk>\w+)', url_name="related-tasks")
-    def related_task(self, request, pk, *args, **kwargs):
-        
-        return Response(f'I am working as {pk} with request type {type(request)}')
 ########################################Viewsets############################################
+
+class TaskListViewSet(viewsets.ModelViewSet):
+    queryset = TaskList.objects.all()
+    serializer_class = TaskListSerilaizer
+    
+    @action(detail=False, url_path=r'related-tasks/(?P<tasklist_title>\w+)', url_name="related-tasks")
+    def related_tasks(self, request: Request, tasklist_title, *args, **kwargs):
+        tasks = get_list_or_404(TaskList, )
+        tasks = Task.objects.filter(tasklist__title = tasklist_title)
+        serializer = TaskSerializer(tasks, many = True)
+        return Response(serializer.data)
+    
