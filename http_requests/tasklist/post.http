@@ -2,5 +2,5 @@ POST http://localhost:8000/api/tasklists
 Content-Type: application/json
 
 {
-    "title": "My Day69"
+    "title": "Deepavali Man"
 }
