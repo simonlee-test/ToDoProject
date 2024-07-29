@@ -1,7 +1,7 @@
-PUT http://localhost:8000/api/tasklists/2
+PUT http://simon:Wifi9329.@localhost:8000/api/tasklists/1
 Content-Type: application/json
 
 {
-    "title" : "My Day",
+    "title" : "My9Day",
     "slug" : "my-day"
 }

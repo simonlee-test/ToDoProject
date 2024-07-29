@@ -1,1 +1,1 @@
-GET http://localhost:8000/api/tasklists/1
+GET http://localhost:8000/api/tasklists?username=ashe&password=123

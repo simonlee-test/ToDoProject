@@ -1,0 +1,6 @@
+PATCH http://orione:123@localhost:8000/api/tasklists/11
+Content-Type: application/json
+
+{
+    "title" : "eleven tasklist"
+}

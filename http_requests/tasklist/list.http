@@ -1,2 +1,5 @@
-GET http://orione:123@localhost:8000/api/tasklists
+GET http://simon:Wifi9329.@localhost:8000/api/tasklists
 
+data = request(simon)
+print(data[0][id]) 
+result = 4
