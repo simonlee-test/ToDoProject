@@ -124,17 +124,16 @@ class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-
-class TaskListViewSet(viewsets.ModelViewSet):
-    queryset = TaskList.objects.all()
-    serializer_class = TaskListSerilaizer
-
     @action(detail=False, url_path=r'(?P<slug>[\w-]+)/related-tasks', url_name="related-tasks")
     def related_tasks(self, request: Request, slug, *args, **kwargs):
         """ 
-        Returns all tasks related to the tasklist with the given slug
+        Returns all tasks related to a tasklist with the given slug
         """
         tasks = get_list_or_404(Task, tasklist__slug=slug)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
+
+class TaskListViewSet(viewsets.ModelViewSet):
+    queryset = TaskList.objects.all()
+    serializer_class = TaskListSerilaizer
 ######################################## Viewsets############################################
