@@ -2,11 +2,7 @@ from django.db import models
 import uuid
 
 # Create your models here.
-from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
-
-class User(AbstractUser):
-    pass
 
 class TaskList(models.Model):
     title = models.CharField(max_length=100, unique=True)

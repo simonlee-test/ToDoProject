@@ -1,11 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import User, Task, TaskList
-# Register your models here.
+from .models import Task, TaskList
 
-class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'is_active', 'is_staff')
-    list_filter = ('is_active', 'is_staff')
+# Register your models here.
 
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'description','due_datetime', 'is_done','tasklist')
@@ -16,9 +12,6 @@ class TaskListAdmin(admin.ModelAdmin):
     # prepopulated_fields = ({'slug': ('title',)})
     readonly_fields = ('slug', )
     
-    
-    
 
-admin.site.register(User, CustomUserAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskList, TaskListAdmin)
