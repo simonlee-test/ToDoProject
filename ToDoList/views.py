@@ -8,6 +8,7 @@ from rest_framework import mixins
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
+from rest_framework import permissions
 ################################## Function Based Views##################################
 # @api_view(['GET', 'POST'])
 # def all_tasks(request, format = None):
@@ -123,6 +124,7 @@ from rest_framework.request import Request
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, url_path=r'(?P<slug>[\w-]+)/related-tasks', url_name="related-tasks")
     def related_tasks(self, request: Request, slug, *args, **kwargs):
@@ -136,4 +138,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 class TaskListViewSet(viewsets.ModelViewSet):
     queryset = TaskList.objects.all()
     serializer_class = TaskListSerilaizer
-######################################## Viewsets############################################
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        serializer.save(owner= self.request.user)
+######################################## Viewsets ############################################
+

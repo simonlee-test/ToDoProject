@@ -1,6 +1,7 @@
-POST http://localhost:8000/api/tasklists
+POST http://simon:Wifi9329.@localhost:8000/api/tasklists
 Content-Type: application/json
 
 {
-    "title": "PineApple"
+    "title": "test owner mou",
+    "owner" : "3"
 }

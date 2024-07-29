@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from rest_framework import permissions
 
 # Create your models here.
 from django.template.defaultfilters import slugify
@@ -7,6 +8,7 @@ from django.template.defaultfilters import slugify
 class TaskList(models.Model):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, default= "", unique=True, null=False, editable=False)    
+    owner = models.ForeignKey('User.User', related_name='tasklists', on_delete= models.CASCADE)
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -27,3 +29,4 @@ class Task(models.Model):
     
     def __str__(self):
         return self.description
+

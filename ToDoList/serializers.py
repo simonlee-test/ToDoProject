@@ -7,6 +7,8 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class TaskListSerilaizer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = TaskList
         fields = '__all__'
+        extra_kwargs = {'owner': {'allow_blank': True}}
