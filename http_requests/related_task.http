@@ -1,1 +1,1 @@
-GET http://localhost:8000/api/tasks/related-task/1
+GET http://localhost:8000/api/tasklists/my-day/related-tasks
