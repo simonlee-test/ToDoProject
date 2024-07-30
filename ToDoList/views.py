@@ -9,7 +9,7 @@ from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework import permissions
-from .permissions import IsOwner
+from django.http import HttpResponseNotAllowed
 ################################## Function Based Views##################################
 # @api_view(['GET', 'POST'])
 # def all_tasks(request, format = None):
@@ -125,10 +125,11 @@ from .permissions import IsOwner
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-
+    permission_classes = [permissions.IsAuthenticated]
+        
     def get_queryset(self):
         """ 
-        Only return querysets that belong to the current user
+        Only return querysets that belong to the current user during GET,PUT,PATCH and DELETE requests
         """
         return super().get_queryset().filter(tasklist__owner=self.request.user)
     
@@ -140,21 +141,23 @@ class TaskViewSet(viewsets.ModelViewSet):
         tasks = get_list_or_404(Task, tasklist__slug=slug)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-    
+
 class TaskListViewSet(viewsets.ModelViewSet):
     queryset = TaskList.objects.all()
     serializer_class = TaskListSerilaizer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     
+    #Used for POST request to create tasklist
     def perform_create(self, serializer):
         """ 
         When calling serializer.save(), set the obj.owner to the current user
+        
         """
         serializer.save(owner= self.request.user)
     
     def get_queryset(self):
         """ 
-        Only return querysets that belong to the current user
+        Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
         """
         return super().get_queryset().filter(owner=self.request.user)
 ######################################## Viewsets ############################################
