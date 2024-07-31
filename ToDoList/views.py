@@ -141,7 +141,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         tasks = get_list_or_404(Task, tasklist__slug=slug)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-
+    
 class TaskListViewSet(viewsets.ModelViewSet):
     queryset = TaskList.objects.all()
     serializer_class = TaskListSerilaizer
@@ -155,10 +155,10 @@ class TaskListViewSet(viewsets.ModelViewSet):
         """
         serializer.save(owner= self.request.user)
     
+    # https://stackoverflow.com/questions/22760191/django-rest-framework-permissions-for-create-in-viewset?rq=3
     def get_queryset(self):
         """ 
         Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
         """
         return super().get_queryset().filter(owner=self.request.user)
 ######################################## Viewsets ############################################
-
