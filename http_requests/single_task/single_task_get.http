@@ -1,1 +1,2 @@
-GET http://localhost:8000/api/tasks/4.json
+GET http://localhost:8000/api/tasks/14
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyNzY0OTE4LCJpYXQiOjE3MjI3NjEzMTgsImp0aSI6ImY0MWFjMDgyY2JiYTQxNjg5NGIzMjM4NmEwMDlmZTAxIiwidXNlcl9pZCI6Mn0.ZPKNKs0NSNH69f_PiSAbExJl2lIASIXDvorfEpX9-JM

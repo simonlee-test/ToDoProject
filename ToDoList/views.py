@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ToDoList.models import Task, TaskList
-from ToDoList.serializers import TaskSerializer, TaskListSerilaizer
+from ToDoList.serializers import TaskSerializer, TaskListSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -54,7 +54,7 @@ from django.http import HttpResponseNotAllowed
 #         return Response(serializer.data)
 
 #     def post(self, request, format = None):
-#         serializer = TaskSerializer(request.data)
+#         serializer = TaskSerializer(data = request.data)
 #         if serializer.is_valid():
 #             serializer.save()
 #             return Response(serializer.data, status= 201)
@@ -138,32 +138,72 @@ class TaskViewSet(viewsets.ModelViewSet):
         """ 
         Returns all tasks related to a tasklist with the given slug
         """
-        # tasks = get_list_or_404(Task, tasklist__slug=slug)
         tasks = self.get_queryset().filter(tasklist__slug = slug)
         if tasks.exists():
             serializer = TaskSerializer(tasks, many=True)
             return Response(serializer.data)
         return Response('No tasks matches the query.', status= 404)
     
-class TaskListViewSet(viewsets.ModelViewSet):
-    queryset = TaskList.objects.all()
-    serializer_class = TaskListSerilaizer
-    permission_classes = [permissions.IsAuthenticated]
+# class TaskListViewSet(viewsets.ModelViewSet):
+#     queryset = TaskList.objects.all()
+#     serializer_class = TaskListSerilaizer
+#     permission_classes = [permissions.IsAuthenticated]
     
-    #Used for POST request to create tasklist
-    def perform_create(self, serializer):
-        """ 
-        When calling serializer.save(), set the obj.owner to the current user
+#     #Used for POST request to create tasklist
+#     def perform_create(self, serializer):
+#         """ 
+#         When calling serializer.save(), set the obj.owner to the current user
         
-        """
-        serializer.save(owner= self.request.user)
+#         """
+#         serializer.save(owner= self.request.user)
     
-    # https://stackoverflow.com/questions/22760191/django-rest-framework-permissions-for-create-in-viewset?rq=3
-    def get_queryset(self):
-        """ 
-        Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
-        """
-        return super().get_queryset().filter(owner=self.request.user)
+#     # https://stackoverflow.com/questions/22760191/django-rest-framework-permissions-for-create-in-viewset?rq=3
+#     def get_queryset(self):
+#         """ 
+#         Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
+#         """
+#         return super().get_queryset().filter(owner=self.request.user)
 ######################################## ModelViewsets ############################################
 
+######################################### ViewSets ################################################
+class TaskListViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def list(self, request):
+        tasklists = get_list_or_404(TaskList, owner = request.user)
+        serializer = TaskListSerializer(tasklists, many = True)
+        return Response(serializer.data)
+    
+    def retrieve(self, request, pk):
+        tasklist = get_object_or_404(TaskList, owner = request.user, pk = pk)
+        serializer = TaskListSerializer(tasklist)
+        return Response(serializer.data)
+    
+    def update(self, request, pk):
+        tasklist = get_object_or_404(TaskList, owner = request.user, pk = pk)
+        serializer = TaskListSerializer(tasklist, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status= 400)
+    
+    def create(self, request):
+        serializer = TaskListSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save(owner = request.user)
+            return Response(serializer.data, status= 201)
+        return Response(serializer.errors, status=400)
+    
+    def partial_update(self, request, pk):
+        tasklist = get_object_or_404(TaskList, owner = request.user, pk=pk)
+        serializer = TaskListSerializer(tasklist, request.data, partial = True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+     
+    def destroy(self, request, pk):
+        tasklist = get_object_or_404(TaskList, owner = request.user, pk = pk)
+        tasklist.delete()
+        return Response(status= 204)   
 ######################################### ViewSets ################################################

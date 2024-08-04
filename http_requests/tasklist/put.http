@@ -1,7 +1,7 @@
-PUT http://simon:Wifi9329.@localhost:8000/api/tasklists/1
+PUT http://localhost:8000/api/tasklists/1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyNzcxNDk4LCJpYXQiOjE3MjI3Njc4OTgsImp0aSI6IjYyYjdmNzQ2OTM5OTRmMjBiMzM2MjRiM2QxOTFjNDU4IiwidXNlcl9pZCI6Mn0.kPTWPX2RcoQmrgHZJgmgv17pf0is08M4ueQgxZ2o8OY
 
 {
-    "title" : "My9Day",
-    "slug" : "my-day"
+    "title" : "14 wohoo"
 }

@@ -1,1 +1,2 @@
-GET http://localhost:8000/api/tasks/333f/related-tasks
+GET http://localhost:8000/api/tasks/allowblank/related-tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyNzYxNDM2LCJpYXQiOjE3MjI3NTc4MzYsImp0aSI6IjY4YWI0OGZhNWFlYTRlNjdhZjczNmFkOWRmYjM0NTU0IiwidXNlcl9pZCI6Mn0.aKUtgUhrzVGeB-7IaLf__u1SRvwTUR6JbcpOIR3RHX0

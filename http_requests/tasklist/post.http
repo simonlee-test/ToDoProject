@@ -1,7 +1,7 @@
-POST http://simon:Wifi9329.@localhost:8000/api/tasklists
+POST http://localhost:8000/api/tasklists
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyNzcwNzQxLCJpYXQiOjE3MjI3NjcxNDEsImp0aSI6ImQ0MGU4MGI2YmRlOTRiOThhNzg2NDkzMTFhODE5ZWQxIiwidXNlcl9pZCI6Mn0.ZB4a9NbLasHz-_OZxqx_62u2iGlowrGmDLYt3SNAF3w
 Content-Type: application/json
 
 {
-    "title": "test owner mou",
-    "owner" : "3"
+    "title": "No owner"
 }

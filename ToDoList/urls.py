@@ -10,11 +10,30 @@ from . import views
 
 # urlpatterns = format_suffix_patterns(urlpatterns)
 
-# used by viewset
-from rest_framework.routers import DefaultRouter
+# used by modelviewset/viewset with router
+# from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter(trailing_slash=False)
-router.register(r'tasks', views.TaskViewSet, basename='task')
-router.register(r'tasklists', views.TaskListViewSet, basename='tasklist')
+# router = DefaultRouter(trailing_slash=False)
+# router.register(r'tasks', views.TaskViewSet, basename='task')
+# router.register(r'tasklists', views.TaskListViewSet, basename='tasklist')
 
-urlpatterns = router.urls
+# urlpatterns = router.urls
+
+#used by viewset for customizable url without router
+tasklist_detail = views.TaskListViewSet.as_view({
+    'get': 'retrieve', 
+    'put': 'update', 
+    'patch': 'partial_update', 
+    'delete': 'destroy'
+    })
+
+tasklist_list = views.TaskListViewSet.as_view({
+    'post': 'create', 
+    'get': 'list'
+    })
+
+urlpatterns = [
+    path('tasklists/<int:pk>', tasklist_detail, name='tasklist_detail'),
+    path('tasklists', tasklist_list, name='taskslist_list'),     
+]
+
