@@ -17,6 +17,4 @@ router = DefaultRouter(trailing_slash=False)
 router.register(r'tasks', views.TaskViewSet, basename='task')
 router.register(r'tasklists', views.TaskListViewSet, basename='tasklist')
 
-urlpatterns = [
-    path('', include(router.urls))
-]
+urlpatterns = router.urls
