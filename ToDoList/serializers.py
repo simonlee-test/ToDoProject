@@ -16,7 +16,7 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = '__all__'
         
-class TaskListSerilaizer(serializers.ModelSerializer):
+class TaskListSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     #added extra_kwargs so that 'owner' field is no longer needed in api request.
     class Meta:
