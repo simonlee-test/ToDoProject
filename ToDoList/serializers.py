@@ -6,7 +6,7 @@ class TaskSerializer(serializers.ModelSerializer):
     # https://stackoverflow.com/questions/72526734/prevent-user-from-creating-instance-for-other-users
     def validate_tasklist(self, value):
         """ 
-        Check that the task belongs to a tasklist of the current user.
+        Check that the task belongs to a tasklist of the current user during POST and PUT request.
         """
         if value not in self.context['request'].user.tasklists.all():
             raise serializers.ValidationError('Only the owner of the tasklist can edit it.')

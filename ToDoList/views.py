@@ -121,7 +121,7 @@ from django.http import HttpResponseNotAllowed
 #     serializer_class = TaskSerializer
 ################################## Views With GenericViews###################################
 
-######################################## Viewsets############################################
+######################################## ModelViewsets############################################
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
@@ -138,9 +138,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         """ 
         Returns all tasks related to a tasklist with the given slug
         """
-        tasks = get_list_or_404(Task, tasklist__slug=slug)
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(serializer.data)
+        # tasks = get_list_or_404(Task, tasklist__slug=slug)
+        tasks = self.get_queryset().filter(tasklist__slug = slug)
+        if tasks.exists():
+            serializer = TaskSerializer(tasks, many=True)
+            return Response(serializer.data)
+        return Response('No tasks matches the query.', status= 404)
     
 class TaskListViewSet(viewsets.ModelViewSet):
     queryset = TaskList.objects.all()
@@ -161,4 +164,6 @@ class TaskListViewSet(viewsets.ModelViewSet):
         Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
         """
         return super().get_queryset().filter(owner=self.request.user)
-######################################## Viewsets ############################################
+######################################## ModelViewsets ############################################
+
+######################################### ViewSets ################################################
