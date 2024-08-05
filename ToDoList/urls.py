@@ -32,8 +32,27 @@ tasklist_list = views.TaskListViewSet.as_view({
     'get': 'list'
     })
 
+task_list = views.TaskViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+task_detail = views.TaskViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy',
+})
+
+related_tasks = views.TaskViewSet.as_view({
+    'get' : 'related_tasks'
+})
+
 urlpatterns = [
     path('tasklists/<int:pk>', tasklist_detail, name='tasklist_detail'),
-    path('tasklists', tasklist_list, name='taskslist_list'),     
+    path('tasklists', tasklist_list, name='taskslist_list'),
+    path('tasks/<int:pk>', task_detail, name='task_detail'),
+    path('tasks', task_list, name='task_list'),
+    path("tasks/<slug:slug>/related-tasks", related_tasks, name='related_tasks'),
 ]
 

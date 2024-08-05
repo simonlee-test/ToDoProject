@@ -1,9 +1,10 @@
-POST http://simon:Wifi9329.@localhost:8000/api/tasks
+POST http://localhost:8000/api/tasks
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyODI2Njk5LCJpYXQiOjE3MjI4MjMwOTksImp0aSI6ImExYzI0NmNmNGViYjQ0OTg5OTEyZTAzZTcyNDE1NmEyIiwidXNlcl9pZCI6Mn0.xmh4N_avX9fo4qgd565MNN9RGgueRqCN7x-QOmnZHpQ
 
 {
-    "description" : "Lai simon task",
-    "due_datetime" : "2024-07-29 20:02:12",
+    "description" : "Hohohoh simon task",
+    "due_datetime" : "2024-08-29 20:02:12",
     "is_done" : false,
     "tasklist" : 13
 }

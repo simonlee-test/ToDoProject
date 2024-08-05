@@ -133,7 +133,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         """
         return super().get_queryset().filter(tasklist__owner=self.request.user)
     
-    @action(detail=False, url_path=r'(?P<slug>[\w-]+)/related-tasks', url_name="related-tasks")
+    @action(detail=False, url_name="related-tasks")
     def related_tasks(self, request: Request, slug, *args, **kwargs):
         """ 
         Returns all tasks related to a tasklist with the given slug
