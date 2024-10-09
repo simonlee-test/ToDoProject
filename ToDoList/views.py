@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ToDoList.models import Task, TaskList
+from ToDoList.models import Task, TaskList, Author, Authorship, Book, Owner
+from ToDoList.serializers import AuthorSerializer, TestingSerializer, BookSerializer, OwnerSerializer, BookOutputSerializer
 from ToDoList.serializers import TaskSerializer, TaskListSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.views import APIView
@@ -143,23 +144,23 @@ class TaskViewSet(viewsets.ModelViewSet):
             serializer = TaskSerializer(tasks, many=True)
             return Response(serializer.data)
         return Response('No tasks matches the query.', status= 404)
-    
+
 # class TaskListViewSet(viewsets.ModelViewSet):
 #     queryset = TaskList.objects.all()
 #     serializer_class = TaskListSerilaizer
 #     permission_classes = [permissions.IsAuthenticated]
-    
+
 #     #Used for POST request to create tasklist
 #     def perform_create(self, serializer):
-#         """ 
+#         """
 #         When calling serializer.save(), set the obj.owner to the current user
-        
+
 #         """
 #         serializer.save(owner= self.request.user)
-    
+
 #     # https://stackoverflow.com/questions/22760191/django-rest-framework-permissions-for-create-in-viewset?rq=3
 #     def get_queryset(self):
-#         """ 
+#         """
 #         Only return querysets that belong to the current user during GET, PUT, PATCH and DELETE requests
 #         """
 #         return super().get_queryset().filter(owner=self.request.user)
@@ -207,3 +208,61 @@ class TaskListViewSet(viewsets.ViewSet):
         tasklist.delete()
         return Response(status= 204)   
 ######################################### ViewSets ################################################
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = TestingSerializer
+    
+    @action(detail=False, url_name="testingAuthor", methods=["GET"])
+    def testingAuthor(self, request: Request, *args, **kwargs):
+        outdated_authors = Authorship.objects.values('author').distinct()
+        print("outdated_authors",outdated_authors)
+        outdated_books = list(Book.objects.filter(authors__in = outdated_authors).distinct())
+        print("outdated_books",outdated_books)
+        # print("type(outdated_books)",type(outdated_books[0]))
+        # print("first book", outdated_books[0].name)
+        book_values = list(Book.objects.values('name').distinct())
+        print(book_values, "vlaues", type(book_values[0]))
+        authors = Author.objects.all()
+        # authors.delete()
+        
+        serializer = BookSerializer(outdated_books, many = True)
+        return Response(serializer.data)
+
+class OwnerViewSet(viewsets.ModelViewSet):
+    queryset = Owner.objects.all()
+    serializer_class = OwnerSerializer
+    
+    @action(detail=False, url_name="testingOwner", methods=["POST"])
+    def testingOwner(self, request: Request, *args, **kwargs):
+        print(request.data['owners'])
+        serializer = OwnerSerializer(data= request.data, many= True)
+        if serializer.is_valid():
+            return Response(serializer.data)
+        return Response(serializer.errors, status= 400)
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    output_serializer_class = BookOutputSerializer
+
+    def list(self, request, *args, **kwargs):
+        self.serializer_class = self.output_serializer_class
+        return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = self.output_serializer_class
+        return super().retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, "_prefetched_objects_cache", None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+        output = self.output_serializer_class(instance).data
+        return Response(output)

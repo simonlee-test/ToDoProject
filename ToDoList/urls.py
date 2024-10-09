@@ -1,6 +1,12 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'authors', views.AuthorViewSet, basename='author')
+router.register(r'owners', views.OwnerViewSet, basename='owner')
+router.register(r'books', views.BookViewSet, basename='book')
 
 # for class-based view, genericviews, views with mixins
 # urlpatterns = [
@@ -49,6 +55,7 @@ related_tasks = views.TaskViewSet.as_view({
 })
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('tasklists/<int:pk>', tasklist_detail, name='tasklist_detail'),
     path('tasklists', tasklist_list, name='taskslist_list'),
     path('tasks/<int:pk>', task_detail, name='task_detail'),
